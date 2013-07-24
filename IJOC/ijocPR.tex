@@ -53,6 +53,7 @@
 \rn \ASZI
 \rn \C
 \rn \D
+\rn \DD
 \rn \DPAM
 \rn \DT
 \rn \DWC
@@ -105,16 +106,16 @@ the presence of two or more conflicting objectives. A decision maker has to
 take into account different criteria that need to be satisfied
 simultaneously.
 
-Let $\R^n$ denote real $m$-dimensional Euclidean space. For vectors $x^{(1)}$, 
+Let $\R^n$ denote real $n$-dimensional Euclidean space. For vectors $x^{(1)}$, 
 $x^{(2)}$ $\in \R^n$ write $x^{(1)} < x^{(2)}$ $(x^{(1)}\le x^{(2)})$ if 
 $\forall i$, $x^{(1)}_i<x^{(2)}_i (x^{(1)}_i\le x^{(2)}_i)$, $i=0$, $\ldots$, 
 $n$. Let $l$, $u \in \R^n$ with $l < u$ and $B = \{ x \in \R^n \mid l\le x\le 
-u\}$. Given $m$ conflicting objective functions $f_i: B \to \R$, $i=1,\ldots,m$, 
+u\}$. Given $p$ conflicting objective functions $f_i: B \to \R$, $i=1,\ldots,p$, 
 the multiobjective optimization problem is to simultaneously minimize all the 
 $f_i$ over $B$.
 
-For a nontrivial multiobjective optimization problem with $m$ conflicting 
-objectives no single solution can optimize all $m$ objectives simultaneously. 
+For a nontrivial multiobjective optimization problem with $p$ conflicting 
+objectives no single solution can optimize all $p$ objectives simultaneously. 
 Hence, a new notion of optimality, known as Pareto optimality (and the set of 
 optimal solutions as the Pareto front), is generally used in the context of
 multiobjective optimization problems. Pareto optimality generally defined using
@@ -187,11 +188,11 @@ detailed description is provided in the Section 4.
 The organization of this paper is as follows. Section 2 gives an overview  
 of the existing multiobjective optimization approaches in general and the 
 previous work by the authors on biobjective optimization problems in particular, 
-and also provides a background on surrogates and hybrid optimization approches 
+and also provides a background on surrogates and hybrid optimization approaches 
 in the context of multiobjective optimization. Section 3 describes the proposed  
 alternative scalarization scheme and presents the multiobjective optimization 
 algorithm. Numerical evaluation on a set of test problems from the literature 
-is presented and results are discussed in the Section 4. Section 5 offers 
+is presented, and results are discussed in Section 4. Section 5 offers 
 concluding remarks.
  
 \section{2}{Background} 
@@ -200,12 +201,12 @@ multiobjective optimization problems. The solution approaches can be divided
 into two broad categories --- evolutionary approaches and scalarization or 
 aggregation approaches. Applying a Pareto based ranking scheme using 
 genetic algorithms has become very common and popular in most of the 
-evolutionary approaches (e.g., \DPAM,), although some schemes based on 
+evolutionary approaches (e.g., \DPAM), although some schemes based on 
 particle swarm intelligence and simulated annealing are significant too. 
 An evolutionary approach yields a set of Pareto solutions at the end of each 
 iteration, however, requires a very large number of true function evaluations 
 and does not guarantee optimality in general. Aggregate or scalarization 
-approaches \E are considered to be classical methods for solving 
+approaches \E\ are considered to be classical methods for solving 
 multiobjective optimization problems. A general idea is to combine all 
 objective functions to convert a multiobjective optimization problem into a 
 single objective optimization problem. Thus at the end of each iteration it 
@@ -223,25 +224,26 @@ sampling strategy used in PAWS is impractical in higher dimensional search
 domains. Deshpande et al. \DWC\ proposed an algorithm for biobjective 
 optimization that employs the adaptive weighting scheme of PAWS, but 
 tries to overcome the limitation of PAWS with a novel sampling strategy 
-and a global search method. The ordering property exploited in the algorithms 
-of \RKW\ and \DWC\ does not work in higher dimensions. Hence, an alternative
-strategy is proposed in this paper that works for problems with any number of
-objectives. 
+and a global search method. The ordering property exploited in these algorithms 
+(\RKW\ and \DWC) for the scalarization of the objectives does not work in 
+higher dimensinal objective spaces (i.e., problems with more than two 
+objectives). Hence, an alternative strategy is proposed in this paper that 
+works for problems with any number of objectives. 
 
-Other methods like normal boundary intersection[], successive Pareto 
-optimization[], directed search domain[] solve multiobjective optimization 
-problems by constructing several aggregate objective functions. A scalarization
-method called BiMADS \ASZ\ solves a biobjective optimization problem through a
-series of single objective formulations using the direct search method MADS,
-and attempts to obtain a uniform coverage of the Pareto front, even in the case
-when the Pareto front is nonconvex or disjoint. Results produced using BiMADS
+Other methods like normal boundary intersection \DD\ and its variations solve 
+multiobjective optimization problems by constructing several aggregate 
+objective functions. A scalarization method called BiMADS \ASZ\ solves a 
+biobjective optimization problem through a series of single objective 
+formulations using the direct search method MADS, and attempts to obtain a 
+uniform coverage of the Pareto front, even in the case when the Pareto front 
+is nonconvex or disjoint. However, results produced using BiMADS
 are dependent on the specific implementation of the algorithm (e.g., Latin
 hypercube sampling used for the very first run in NOMAD 3.5.1 may not produce
-consistent results always). BiMADS also exploits the ordering property
-available in two dimensional case, and hence is not applicable in problems with
-more than two objectives. Audet et al. suggested an alternate formulation in
-\MM\ to generalize their scheme for the problems with more than two
-objectives. 
+consistent results always), and BiMADS also exploits the ordering property
+available in two dimensional case, and hence is not applicable for problems 
+with more than two objectives. Audet et al. suggested an alternate formulation 
+in \ASZ\ to generalize the scalarization scheme to the problems with more 
+than two objectives. 
 
 Several real world scientific and engineering applications require analysis of 
 spatially distributed data from expensive experiments or complex computer 
@@ -267,8 +269,8 @@ Hybrid optimization is a popular approach in the optimization community where
 several different optimization techniques are combined to improve robustness 
 and blend distinct strengths of different approaches \GF. This same 
 notion has been extended to multiobjective optimization problems in \WIHM. 
-The Pareto approximation method of this paper is a hybrid approach using two 
-direct search methods, DIRECT (to explore the design space globally) and 
+The Pareto front approximation method of this paper is a hybrid approach using 
+two direct search methods, DIRECT (to explore the design space globally) and 
 MADS (to fine tune the potentially optimal regions returned by DIRECT), to 
 balance between global and local searches and to improve the convergence rate.
 
@@ -289,18 +291,18 @@ In the biobjective optimization case, a point with the largest Euclidean
 distance with its neighbors is selected as the most isolated point provided 
 that the data points are ordered in either of the two objectives. However, 
 this notion of ordering does not exist in higher dimensions. Hence, an alternative 
-is proposed for identifying the most isolated point in a high dimesnional 
+is proposed for identifying the most isolated point in a high dimensional 
 objective space. This is achieved by using a concept from computational geometry, 
 known as triangulation. Triangulation of a discrete set of points is a
-subdivision of the convex hull of the points into simplices (e.g. a set of 
+subdivision of the convex hull of the points into simplices (e.g., a set of 
 triangles in 2D). A frequently used and studied point set triangulation is the
 Delaunay triangulation. A Delaunay triangulation of a point set is a
 triangulation of the point set with the property that no point in the point set
 falls in the interior of the circumcircle of any triangle in the triangulation.
 Once the triangulation is constructed for the current nondominated point set,
 the average distance of each vertex from its neighbors (given two vertices
-$v_1$ and $v_2$, $v_1$ is a neighbor of $v_2$ [and $v_2$ a neighbor of $v_1$]
-if there is a common edge between $v_1$ and $v_2$ in the given triangulation)
+$v^1$ and $v^2$, $v^1$ is a neighbor of $v^2$ [and $v^2$ a neighbor of $v^1$]
+if there is a common edge between $v^1$ and $v^2$ in the given triangulation)
 is computed, and the vertex with the largest average distance from its
 neighbors is then considered as the most isolated point for that iteration. The
 precise mathematical formulation of this process is presented in the next
@@ -316,9 +318,9 @@ only. For this initialization step, $p+1$ single objective formulations using
 $p+1$ weight vectors are obtained --- $p$ of which correspond to the individual
 optima of the $p$ objective functions and one more with the equal preference to
 all the objectives ($w^i=1/p$, $i=1$, $\ldots$, $p$, $\sum_{i=1}^{p}w_i=1$). 
-Due to peculiar sampling strategy of DIRECT, it never samples the boundary 
+A peculiarity of DIRECT is that it never samples the boundary 
 points of a design space or takes a large number of iterations to reach 
-reasonably close to the boundary. On account of this behaviour of DIRECT, 
+reasonably close to the boundary. On account of this behavior of DIRECT, 
 the potentially optimal regions returned by DIRECT are fine tuned using MADS. 
 Using the data collected in DIRECT's global search a surrogate is built over 
 the entire design space to find individual optimum for each objective function 
@@ -326,7 +328,7 @@ using MADS. The candidate solutions are evaluated and stored in the database.
 
 The preprocessing step is a crucial part of the proposed algorithm. It helps 
 in eliminating a subset of local optima and accelerates the process of moving 
-to the Pareto front. However, it does not eliminate all the local optima (as 
+to a Pareto front. However, it may not eliminate all the local optima (as 
 the preprocessing is done using a fixed set of weights), and hence the 
 algorithm may not find a global Pareto front always.    
 
@@ -348,13 +350,13 @@ initialized to user defined values. \smallskip
 set of nondominated points at the start of the iteration $k$ and 
 $P^{(k)} = \bigl\{F(x^{(k,1)})$, $F(x^{(k,2)})$,$\ldots$,$F(x^{(k,J_k)})\bigr
 \}$ be the corresponding objective space where $F(x) = \bigl (f_1(x)$, 
-$f_2(x), f_3(x)\bigr )$ and $J_{k}$ is the cardinality of $X^{(k)}$ (and 
-$P^{(k)}$). Note that for the very first iteration ($k=0$) the nondominated 
-set $X^{(0)}$ is the result of the preprocessing step. For a typical 
-$p$-objective optimization problem the Pareto front is a $p-1$ dimensional 
-manifold. Hence to construct a $p-1$ dimensional triangulation from a set of
-$p$-dimensional point set,  each point ($f_1$, $f_2$, $\ldots$, $f_p$) is
-transformed to its homogeneous coordinate of the form ($f_1/f_p$, $f_2/f_p$,
+$\ldots, f_p(x)\bigr )$ for $p$ objectives and $J_{k}$ is the cardinality of 
+$X^{(k)}$ (and $P^{(k)}$). Note that for the very first iteration ($k=0$) the 
+nondominated set $X^{(0)}$ is the result of the preprocessing step. For a 
+typical $p$-objective optimization problem the Pareto front is a $p-1$ 
+dimensional manifold. Hence to construct a $p-1$ dimensional triangulation from 
+a set of $p$--dimensional point set,  each point ($f_1$, $f_2$, $\ldots$, $f_p$) 
+is transformed to its homogeneous coordinate of the form ($f_1/f_p$, $f_2/f_p$,
 $\ldots$, ${f_{p-1}}/f_p$, $1$) assuming that the objectives are appropriately
 scaled. A Delauanay triangulation, $DT$ is constructed using this $p-1$
 dimensional transformed data set. The gap between the nondominated points in
@@ -386,15 +388,16 @@ Pareto optimal point (and excluded from further consideration as an isolated
 point) and the above procedure is repeated until a new isolated point is 
 found. When a previously visited point $x_c^i$ is encountered it indicates 
 that the algorithm failed to produce any better points (i.e., a point that
-dominates the center point) at the $i^{th}$ iteration. This behaviour could 
-be explained in either of the two situations: the surrogate for the local 
-trust region for the ${i^{th}}$ iteration was not accurate enough or $x_c^i$ is 
-a locally Pareto optimal point. Reducing the trust region radius (and generating 
-a new experimental design) would help in constructing a more accurate surrogate 
-to check if any better points around $x_c^i$ exist. \smallskip
+dominates the center point) at the $i^{th}$ iteration. This behavior could 
+be seen in either of the two situations: the surrogate for the local trust 
+region for the ${i^{th}}$ iteration was not accurate enough or $x_c^i$ is 
+a locally Pareto optimal point. Reducing the trust region radius (and 
+generating a new experimental design) would help in constructing a more 
+accurate surrogate to check if any better points around $x_c^i$ exist. 
+\smallskip
 
 In classic trust region algorithms a trust region is expanded when the surrogate 
-is in a reasonablly good agreement with the true objective function. In the 
+is in a reasonably good agreement with the true objective function. In the 
 proposed algorithm the center point and hence, the trust region at each 
 iteration changes as a result of the process of identifying the most isolated 
 point, and weights are redetermined at each iteration that changes the resulting 
@@ -430,12 +433,19 @@ Additional weights are derived using an adaptive weighting scheme. Based on the
 value of the objective function at the center point $x_c^{(k)}$ for an
 iteration and its $n$ neighbors, at most $n$ additional weights are computed at 
 every iteration as follows. 
-$$\hbox{If } J_k \ge 2, {w_j^i={c^i {1 \over {\bigl (f_j(x_c^{(k)})-f_j(x^{(k,i)})\bigr) }} }},$$ 
-$$\hbox{  for } i=1,\ldots,n; j=1,\ldots,p; {(f_j(x_c^{(k)})-f_j(x^{(k,i)})\bigr)}>0,$$
+$$\hbox{If } J_k \ge 2, {w_j^i={c^i {1 \over {\bigl |f_j(x_c^{(k)})-f_j(x^{(k,i)})\bigr| }} }},$$ 
+$$\hbox{  for } i=1,\ldots,n; j=1,\ldots,p;$$
+$$\hbox{where, } {\bigl |f_j(x_c^{(k)})-f_j(x^{(k,i)})\bigr|}>0 \hbox{ and } {\sum_{j=1}^p w_j^i} = 1$$
 
-$$\hbox{if } J_k = 1, w= [w_1,w_2,\ldots,w_p] = [1/p,\ldots,1/p]$$
+$$\hbox{if } J_k = 1, w = [w_1,w_2,\ldots,w_p] = [1/p,\ldots,1/p]$$
 
-\noindent where $c^i$ is a constant leading to ${\sum_{i=1}^n w_i}=1$. 
+\noindent where $c^i$ is a constant leading to ${\sum_{j=1}^p w_j^i}=1$. 
+
+\noindent $\bigl |f_j(x_c^{(k)})-f_j(x^{(k,i)})\bigr|=0$ indicates that there 
+was no improvement in the $j^{th}$ objective for the iteration $i$ or 
+the $j^{th}$ objective is at a local optimal value. Hence, a small value is 
+assigned to $w_j$ and other weights are adjusted such that 
+${\sum_{i=1}^p w_i} = 1-w_j$, $j\ne i$.
 
 \par\noindent Thus, the surrogates constructed at each iteration include 
  $$s_j = \tilde f_j \hbox{ for } j=1, \ldots, p.$$
@@ -444,7 +454,7 @@ $$\hbox{if } J_k = 1, w= [w_1,w_2,\ldots,w_p] = [1/p,\ldots,1/p]$$
 $$s_i =\sum_{j=1}^p w_j^{i}s_j, \hbox{ for } i=1, \ldots, n.$$
 
 \par\noindent if $J^k < 2$,\quad  
-$$s = \sum_{j=1}^n w_js_j.$$\smallskip
+$$s = \sum_{j=1}^p {1\over{p}}s_j.$$\smallskip
 
 \noindent{\bf Step 3: Solving optimization problems}\smallskip
 
@@ -516,6 +526,11 @@ series of single objective formulations}{SIAM Journal of Optimization}
 {Deb K.}{Multiobjective genetic algorithms: problem difficulties and 
 construction of test problems}{Evol. Comput.}{Vol. 7. pp. 205---230, 1999}
 
+\refj %DD
+{Das I. and Dennis J.E.}{Normal-Boundary Intersection: A New Method for 
+Generating the Pareto Surface in Nonlinear Multicriteria Optimization Problems
+}{SIAM Journal on Optimization}{Vol. 8. pp. 631---657, 1998}
+
 \refj %DPAM
 {Deb, K., Pratap. A, Agarwal, S., and Meyarivan, T.}{A fast and elitist 
 multiobjective genetic algorithm: NSGA-II}{IEEE Transaction on Evolutionary 
@@ -553,11 +568,6 @@ without the Lipschitz constant}{Journal of Optimization Theory and Application}
 {Kugele S. C., Watson L. T., and Trosset M. W.}{Multidimensional numerical 
 integration for robust design optimization}{ACM Southeast Regional Conference}
 {pp. 385-390, 2007}
-
-\refj %MM
-{Jones D. R., Perttunen  C. D., and Stuckman B. E.}{Lipschitzian optimization
-without the Lipschitz constant}{Journal of Optimization Theory and Application} 
-{Vol. 79, No. 1, pp. 157-181, 1993}
 
 \refp %RKW
 {Ryu J., Kim S., and Wan H.}{Pareto front approximation with adaptive weighted 
